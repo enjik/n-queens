@@ -16,6 +16,7 @@
       } else {
         this.set('n', params.length);
       }
+      // console.log(this, this.attributes);
     },
 
     rows: function() {
@@ -44,9 +45,9 @@
     hasAnyQueenConflictsOn: function(rowIndex, colIndex) {
       return (
         this.hasRowConflictAt(rowIndex) ||
-        this.hasColConflictAt(colIndex) ||
-        this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
-        this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
+      this.hasColConflictAt(colIndex) ||
+      this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
+      this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
       );
     },
 
@@ -57,19 +58,19 @@
     _isInBounds: function(rowIndex, colIndex) {
       return (
         0 <= rowIndex && rowIndex < this.get('n') &&
-        0 <= colIndex && colIndex < this.get('n')
+      0 <= colIndex && colIndex < this.get('n')
       );
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
     \__ \ || (_| | |  | |_  | | | |  __/ | |  __/_
     |___/\__\__,_|_|   \__| |_| |_|\___|_|  \___(_)
 
- */
+    */
     /*=========================================================================
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
@@ -79,28 +80,75 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      // console.log(this.attributes[rowIndex]);
+      let hasConflict = false;
+      let row = this.attributes[rowIndex];
+      let sum = _.reduce(row, function(accum, num) { return accum + num; }, 0);
+      if (sum > 1) {
+        hasConflict = true;
+      }
+      
+      return hasConflict; // fixme
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+
+      let hasConflict = false;
+      let board = this.attributes;  
+      for (let arr in board) {
+        if (Array.isArray(board[arr]) && this.hasRowConflictAt(arr)) {
+          hasConflict = true;             
+        }
+      }       
+      return hasConflict; // fixme
     },
 
-
+    /*
+    inputs: 
+    outputs:
+    constraints:
+    edge cases:
+    This fn should:
+    Relationship btwn inputs and outputs:
+    */
 
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+       let hasConflict = false;
+       let lattice = this.attributes;        
+
+      return hasConflict; // fixme
     },
+    /*
+    inputs: number
+    outputs: boolean
+    constraints:
+    edge cases:
+    This fn should: takes the index. Checks if there are more than one
+      '1' at that index in all array.
+    Relationship btwn inputs and outputs: 
+    */
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
+        console.log(this.attributes)
+        
+
+
       return false; // fixme
     },
+    /*
+    inputs: none
+    outputs: boolean
+    constraints: none
+    edge cases:
+    This fn should: 
+    Relationship btwn inputs and outputs: 
+    */
 
 
 
