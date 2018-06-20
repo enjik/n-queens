@@ -44,7 +44,7 @@
 
     hasAnyQueenConflictsOn: function(rowIndex, colIndex) {
       return (
-        this.hasRowConflictAt(rowIndex) ||
+      this.hasRowConflictAt(rowIndex) ||
       this.hasColConflictAt(colIndex) ||
       this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
       this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
@@ -57,7 +57,7 @@
 
     _isInBounds: function(rowIndex, colIndex) {
       return (
-        0 <= rowIndex && rowIndex < this.get('n') &&
+      0 <= rowIndex && rowIndex < this.get('n') &&
       0 <= colIndex && colIndex < this.get('n')
       );
     },
@@ -118,10 +118,18 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-       let hasConflict = false;
-       let lattice = this.attributes;        
-
-      return hasConflict; // fixme
+      let hasConflict = false;
+      let lattice = this.attributes;
+      let sum = 0;
+      for (let key in lattice) {
+        if (Array.isArray(lattice[key])) {
+          sum += lattice[key][colIndex];
+        }
+      }
+      if (sum > 1) {
+        hasConflict = true;
+      }
+      return hasConflict;
     },
     /*
     inputs: number
@@ -131,15 +139,26 @@
     This fn should: takes the index. Checks if there are more than one
       '1' at that index in all array.
     Relationship btwn inputs and outputs: 
+
+    set bool F
+    iterate attributes - for-in
+    sum values at row(arg-index) (index is not for loop 'i')
+    if sum is more than one
+       set bool T
+    return bool
     */
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-        console.log(this.attributes)
-        
-
-
-      return false; // fixme
+      // console.log(this.attributes)
+      let n = this.attributes.n;
+      let hasConflict = false;
+      for (let i = 0; i < n; i++ ) {
+        if (this.hasColConflictAt(i)) {
+          hasConflict = true;
+        }
+      }
+      return hasConflict;
     },
     /*
     inputs: none
@@ -148,6 +167,12 @@
     edge cases:
     This fn should: 
     Relationship btwn inputs and outputs: 
+    
+    set bool F
+    call col conflict 0 -> n-1
+    if any call returns true
+    set bool T
+    return bool
     */
 
 
@@ -185,12 +210,12 @@
 
   });
 
-  var makeEmptyMatrix = function(n) {
+var makeEmptyMatrix = function(n) {
+  return _(_.range(n)).map(function() {
     return _(_.range(n)).map(function() {
-      return _(_.range(n)).map(function() {
-        return 0;
-      });
+      return 0;
     });
-  };
+  });
+};
 
 }());
