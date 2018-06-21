@@ -222,6 +222,11 @@
           return true; 
         }
       }     
+      for (row; row < n; row++) {
+        if (this.hasMajorDiagonalConflictAt(row, col) === true) {
+          return true; 
+        }
+      }
       return false;
     },
 
