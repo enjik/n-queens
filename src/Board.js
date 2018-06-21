@@ -249,13 +249,70 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    OLDhasMinorDiagonalConflictAt: function(homeRow, homeCol) {
+      let hasPiece = false;
+      let row = homeRow;
+      let col = homeCol;
+      let n = this.attributes.n;
+      let lattice = this.attributes;
+ 
+      console.log('diag', this.get(row), col)
+      // while (this.get(row) !== undefined) {
+      while (this.get(row) !== undefined) {
+
+        if ( hasPiece === true && this.get(row)[col] === 1) {
+          return true;
+        }
+        if (this.get(row)[col] === 1) {
+          hasPiece = true;
+        }          
+        row--;
+        col++;
+      }
+      return false;
     },
+
+
+    hasMinorDiagonalConflictAt: function(homeRow, homeCol) {
+      let hasPiece = false;
+      let row = homeRow;
+      let col = homeCol;
+      
+      while (this.get(row) !== undefined) {
+        if ( hasPiece === true && this.get(row)[col] === 1) {
+          return true;
+        }
+        if (this.get(row)[col] === 1) {
+          hasPiece = true;
+        }          
+        row--;
+        col++;
+      }
+      return false;
+    },
+
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      let n = this.attributes.n;
+      let col = 0;
+      let row = 0;
+      for (row; row < n; row++) {
+        if (this.hasMinorDiagonalConflictAt(row, col) === true) {
+          return true; 
+        }
+      }  
+      col++;    
+
+      for (col; col < n; col++) {
+        if (this.hasMinorDiagonalConflictAt(row, col) === true) {
+          return true; 
+        }
+      }   
+      // row--;
+       
+      
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
