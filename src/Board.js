@@ -44,7 +44,7 @@
 
     hasAnyQueenConflictsOn: function(rowIndex, colIndex) {
       return (
-      this.hasRowConflictAt(rowIndex) ||
+        this.hasRowConflictAt(rowIndex) ||
       this.hasColConflictAt(colIndex) ||
       this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
       this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
@@ -57,7 +57,7 @@
 
     _isInBounds: function(rowIndex, colIndex) {
       return (
-      0 <= rowIndex && rowIndex < this.get('n') &&
+        0 <= rowIndex && rowIndex < this.get('n') &&
       0 <= colIndex && colIndex < this.get('n')
       );
     },
@@ -181,15 +181,63 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(homeRow, homeCol) {
+      let hasPiece = false;
+      let row = homeRow;
+      let col = homeCol;
+      
+      while (this.get(row) !== undefined) {
+        if ( hasPiece === true && this.get(row)[col] === 1) {
+          return true;
+        }
+        if (this.get(row)[col] === 1) {
+          hasPiece = true;
+        }          
+        row++;
+        col++;
+      }
+      return false;
     },
+
+    /*
+    inputs: column and row index
+    outputs: boolean
+    constraints: none
+    edge cases: none
+    This fn should: check if two pieces are encountered in a diagonal
+    Relationship btwn inputs and outputs: inputs indicate where diagonal to be checked starts,
+    ouput indicates whether more than one piece was encountered in diagnonal 
+    
+   
+    */
+
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      let n = this.attributes.n;
+      let col = n - 1;
+      let row = 0;
+      for (col; col >= 0; col--) {
+        if (this.hasMajorDiagonalConflictAt(row, col) === true) {
+          return true; 
+        }
+      }     
+      return false;
     },
 
+    /*
+    inputs: none
+    outputs: boolean
+    constraints: none
+    edge cases:
+    This fn should: 
+    Relationship btwn inputs and outputs: 
+    
+    start iterating through matrix at homerow, col index (n - 1 -> 0) 
+    
+    increment row and check diagonals until row = n - 1 
+   
+    */
 
 
     // Minor Diagonals - go from top-right to bottom-left
@@ -210,12 +258,12 @@
 
   });
 
-var makeEmptyMatrix = function(n) {
-  return _(_.range(n)).map(function() {
+  var makeEmptyMatrix = function(n) {
     return _(_.range(n)).map(function() {
-      return 0;
+      return _(_.range(n)).map(function() {
+        return 0;
+      });
     });
-  });
-};
+  };
 
 }());
