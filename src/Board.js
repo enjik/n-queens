@@ -249,28 +249,6 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    OLDhasMinorDiagonalConflictAt: function(homeRow, homeCol) {
-      let hasPiece = false;
-      let row = homeRow;
-      let col = homeCol;
-      let n = this.attributes.n;
-      let lattice = this.attributes;
- 
-      console.log('diag', this.get(row), col)
-      // while (this.get(row) !== undefined) {
-      while (this.get(row) !== undefined) {
-
-        if ( hasPiece === true && this.get(row)[col] === 1) {
-          return true;
-        }
-        if (this.get(row)[col] === 1) {
-          hasPiece = true;
-        }          
-        row--;
-        col++;
-      }
-      return false;
-    },
 
 
     hasMinorDiagonalConflictAt: function(homeRow, homeCol) {
@@ -278,40 +256,36 @@
       let row = homeRow;
       let col = homeCol;
       
-      while (this.get(row) !== undefined) {
-        if ( hasPiece === true && this.get(row)[col] === 1) {
+      while (col !== homeRow - 1 && row !== homeCol + 1) {
+        if ( hasPiece === true && this.get(row) !== undefined && this.get(row)[col] === 1) {
           return true;
         }
-        if (this.get(row)[col] === 1) {
+        if (this.get(row) !== undefined && this.get(row)[col] === 1) {
           hasPiece = true;
         }          
-        row--;
-        col++;
+        row++;
+        col--;
       }
       return false;
     },
 
 
     // test if any minor diagonals on this board contain conflicts
-    hasAnyMinorDiagonalConflicts: function() {
+    hasAnyMinorDiagonalConflicts:  function() {
       let n = this.attributes.n;
-      let col = 0;
+      let col = 1;
       let row = 0;
-      for (row; row < n; row++) {
+      for (col; col <= n - 1; col++) {
         if (this.hasMinorDiagonalConflictAt(row, col) === true) {
           return true; 
         }
-      }  
-      col++;    
-
-      for (col; col < n; col++) {
+      } 
+      row++;    
+      for (row; row <= n - 1; row++) {
         if (this.hasMinorDiagonalConflictAt(row, col) === true) {
           return true; 
         }
-      }   
-      // row--;
-       
-      
+      }
       return false;
     }
 
